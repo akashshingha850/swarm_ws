@@ -131,13 +131,9 @@ ros2 run multiagent_simulation move_drone
 
 The drone can be configured to fuse external odometry by changing the parameters described in [Cartographer SLAM with ROS 2 in SITL](https://ardupilot.org/dev/docs/ros2-cartographer-slam.html#configure-ardupilot). These parameters are already available in [gazebo-iris.parm](src/multiagent_simulation/config/gazebo-iris.parm) so in order to change from GPS navigation to external odometry navigation they only need to be uncommented and the GPS section commented out.
 
-Ardupilot then receives the external odometry via the [`/ap/tf` topic](https://ardupilot.org/dev/docs/ros2-interfaces.html#odometry). Currently feeding external odometry in simulations is only supported for a single drone as described in the [limitations section below](#not-possible-to-do-multiagent-simulation-with-external-odometry).
+Ardupilot then receives the external odometry via the [`/ap/tf` topic](https://ardupilot.org/dev/docs/ros2-interfaces.html#odometry). Support for feeding in external odometry for multiple drones was added in https://github.com/ArduPilot/ardupilot/pull/32510.
 
 ## Limitations
-
-### Not possible to do multiagent simulation with external odometry
-
-**Description:** Currently, the `/ap` namespace isn't correctly namespace for multiple drones. For more details on this limitation, see [this issue](https://github.com/ArduPilot/ardupilot_gazebo/issues/140).
 
 ### ap/geopose/filtered doesn't reflect global position set in Gazebo world
 

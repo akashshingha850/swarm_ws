@@ -14,6 +14,7 @@ Maintainer: [Gilbert Tanner](mailto:gilbert.tanner@aau.at)
         - [From VSCode](#from-vscode)
         - [From the Command Line](#from-the-command-line)
     - [Running just the Dockerfile](#running-just-the-dockerfile)
+    - [Running with Docker Compose](#running-with-docker-compose)
 - [Run simulation](#run-simulation)
 - [Multiagent simulation](#multiagent-simulation)
 - [Drone configuration](#drone-configuration)
@@ -74,6 +75,17 @@ Using a devcontainer or Dockerfile provides a consistent development environment
 2. Run the Docker container:
     ```bash
     docker run -it --rm -v $(pwd):/workspace multiagent_simulation
+    ```
+
+### Running with Docker Compose
+
+1. Build the image:
+    ```bash
+    env UID=$(id -u) GID=$(id -g) docker compose build
+    ```
+2. Start the container:
+    ```bash
+    env UID=$(id -u) GID=$(id -g) docker compose run --rm multiagent-simulation bash
     ```
 
 ## Run simulation

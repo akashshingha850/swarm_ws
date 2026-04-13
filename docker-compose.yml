@@ -1,0 +1,36 @@
+services:
+  multiagent-simulation:
+    container_name: multiagent-simulation
+    build:
+      context: .devcontainer
+      dockerfile: Dockerfile
+      args:
+        USERNAME: ubuntu
+        USER_UID: ${UID:-1000}
+        USER_GID: ${GID:-1000}
+    image: multiagent_simulation:latest
+    privileged: true
+    network_mode: host
+    environment:
+      DISPLAY: ${DISPLAY}
+      QT_X11_NO_MITSHM: "1"
+      GZ_VERSION: harmonic
+      GZ_SIM_RESOURCE_PATH: /workspaces/swarm_ws/src/multiagent_simulation/models:/workspaces/swarm_ws/src/multiagent_simulation/worlds:/workspaces/swarm_ws/src
+    working_dir: /workspaces/swarm_ws
+    user: "${UID:-1000}:${GID:-1000}"
+    command: >
+      bash -lc '
+        source /opt/ros/humble/setup.bash
+        source /workspace/ardu_ws/install/setup.bash
+        sudo chown -R $(id -u):$(id -g) /workspaces/swarm_ws/build /workspaces/swarm_ws/install /workspaces/swarm_ws/log
+        rosdep install --from-paths src --ignore-src -r -y
+        rm -rf /workspaces/swarm_ws/build/multiagent_simulation /workspaces/swarm_ws/install/multiagent_simulation
+        colcon build --symlink-install --packages-select multiagent_simulation
+        source /workspaces/swarm_ws/install/setup.bash
+        exec ros2 launch multiagent_simulation multiagent_simulation.launch.py
+      '
+    volumes:
+      - ./:/workspaces/swarm_ws
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    stdin_open: true
+    tty: true

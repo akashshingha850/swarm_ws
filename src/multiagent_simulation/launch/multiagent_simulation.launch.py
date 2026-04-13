@@ -267,53 +267,53 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         )
         launch_actions.append(bridge)
         
-        # Mapping camera image bridge
-        mapping_image_bridge = Node(
-            package="ros_gz_image",
-            executable="image_bridge",
-            namespace=name,
-            name="mapping_camera_image_bridge",
-            arguments=[
-                f'/world/map/model/{name}/link/mapping_camera_link/sensor/mapping_camera/image',
-                '--ros-args',
-                '--remap', f'/world/map/model/{name}/link/mapping_camera_link/sensor/mapping_camera/image:=mapping_camera/image',
-            ],
-            condition=IfCondition(LaunchConfiguration("use_mapping_camera")),
-            output="screen",
-        )
-        launch_actions.append(mapping_image_bridge)
+        # # Mapping camera image bridge
+        # mapping_image_bridge = Node(
+        #     package="ros_gz_image",
+        #     executable="image_bridge",
+        #     namespace=name,
+        #     name="mapping_camera_image_bridge",
+        #     arguments=[
+        #         f'/world/map/model/{name}/link/mapping_camera_link/sensor/mapping_camera/image',
+        #         '--ros-args',
+        #         '--remap', f'/world/map/model/{name}/link/mapping_camera_link/sensor/mapping_camera/image:=mapping_camera/image',
+        #     ],
+        #     condition=IfCondition(LaunchConfiguration("use_mapping_camera")),
+        #     output="screen",
+        # )
+        # launch_actions.append(mapping_image_bridge)
         
-        # Navigation camera image bridge
-        navigation_image_bridge = Node(
-            package="ros_gz_image",
-            executable="image_bridge",
-            namespace=name,
-            name="navigation_camera_image_bridge",
-            arguments=[
-                f'/world/map/model/{name}/link/navigation_camera_link/sensor/navigation_camera/image',
-                '--ros-args',
-                '--remap', f'/world/map/model/{name}/link/navigation_camera_link/sensor/navigation_camera/image:=navigation_camera/image'
-            ],
-            condition=IfCondition(LaunchConfiguration("use_navigation_camera")),
-            output="screen",
-        )
-        launch_actions.append(navigation_image_bridge)
+        # # Navigation camera image bridge
+        # navigation_image_bridge = Node(
+        #     package="ros_gz_image",
+        #     executable="image_bridge",
+        #     namespace=name,
+        #     name="navigation_camera_image_bridge",
+        #     arguments=[
+        #         f'/world/map/model/{name}/link/navigation_camera_link/sensor/navigation_camera/image',
+        #         '--ros-args',
+        #         '--remap', f'/world/map/model/{name}/link/navigation_camera_link/sensor/navigation_camera/image:=navigation_camera/image'
+        #     ],
+        #     condition=IfCondition(LaunchConfiguration("use_navigation_camera")),
+        #     output="screen",
+        # )
+        # launch_actions.append(navigation_image_bridge)
 
-        # Zed camera image bridge
-        zed_image_bridge = Node(
-            package="ros_gz_image",
-            executable="image_bridge",
-            namespace=name,
-            name="zed_camera_image_bridge",
-            arguments=[
-                f'/world/map/model/{name}/link/zed_camera_link/sensor/zed_camera/image',
-                '--ros-args',
-                '--remap', f'/world/map/model/{name}/link/zed_camera_link/sensor/zed_camera/image:=zed_camera/image',
-            ],
-            condition=IfCondition(LaunchConfiguration("use_zed_camera")),
-            output="screen",
-        )
-        launch_actions.append(zed_image_bridge)
+        # # Zed camera image bridge
+        # zed_image_bridge = Node(
+        #     package="ros_gz_image",
+        #     executable="image_bridge",
+        #     namespace=name,
+        #     name="zed_camera_image_bridge",
+        #     arguments=[
+        #         f'/world/map/model/{name}/link/zed_camera_link/sensor/zed_camera/image',
+        #         '--ros-args',
+        #         '--remap', f'/world/map/model/{name}/link/zed_camera_link/sensor/zed_camera/image:=zed_camera/image',
+        #     ],
+        #     condition=IfCondition(LaunchConfiguration("use_zed_camera")),
+        #     output="screen",
+        # )
+        # launch_actions.append(zed_image_bridge)
 
         # Relay - use instead of transform when Gazebo is only publishing odom -> base_link
         topic_tools_tf = Node(

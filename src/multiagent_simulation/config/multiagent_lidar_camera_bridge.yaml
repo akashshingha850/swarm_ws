@@ -57,31 +57,31 @@
   direction: GZ_TO_ROS
 
 # Images should be handled via the image_bridge so only the camera_info topics need to be bridged here
-# - ros_topic_name: "mapping_camera/image"
-#   gz_topic_name: "/world/map/model/<robot_name>/link/mapping_camera_link/sensor/mapping_camera/image"
-#   ros_type_name: "sensor_msgs/msg/Image"
-#   gz_type_name: "gz.msgs.Image"
-#   direction: GZ_TO_ROS
+- ros_topic_name: "mapping_camera/image"
+  gz_topic_name: "/world/map/model/<robot_name>/link/mapping_camera_link/sensor/mapping_camera/image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
 - ros_topic_name: "mapping_camera/camera_info"
   gz_topic_name: "/world/map/model/<robot_name>/link/mapping_camera_link/sensor/mapping_camera/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "gz.msgs.CameraInfo"
   direction: GZ_TO_ROS
-# - ros_topic_name: "navigation_camera/image"
-#   gz_topic_name: "/world/map/model/<robot_name>/link/navigation_camera_link/sensor/navigation_camera/image"
-#   ros_type_name: "sensor_msgs/msg/Image"
-#   gz_type_name: "gz.msgs.Image"
-#   direction: GZ_TO_ROS
+- ros_topic_name: "navigation_camera/image"
+  gz_topic_name: "/world/map/model/<robot_name>/link/navigation_camera_link/sensor/navigation_camera/image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
 - ros_topic_name: "navigation_camera/camera_info"
   gz_topic_name: "/world/map/model/<robot_name>/link/navigation_camera_link/sensor/navigation_camera/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "gz.msgs.CameraInfo"
   direction: GZ_TO_ROS
-# - ros_topic_name: "zed_camera/image"
-#   gz_topic_name: "/world/map/model/<robot_name>/link/zed_camera_link/sensor/zed_camera/image"
-#   ros_type_name: "sensor_msgs/msg/Image"
-#   gz_type_name: "gz.msgs.Image"
-#   direction: GZ_TO_ROS
+- ros_topic_name: "zed_camera/image"
+  gz_topic_name: "/world/map/model/<robot_name>/link/zed_camera_link/sensor/zed_camera/image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
 # Activate when switching to RGBD camera
 # - ros_topic_name: "zed_camera/depth_image"
 #   gz_topic_name: "/world/map/model/<robot_name>/link/zed_camera_link/sensor/zed_camera/depth_image"

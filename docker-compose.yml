@@ -15,7 +15,7 @@ services:
       DISPLAY: ${DISPLAY}
       QT_X11_NO_MITSHM: "1"
       GZ_VERSION: harmonic
-      GZ_SIM_RESOURCE_PATH: /workspaces/swarm_ws/src/multiagent_simulation/models:/workspaces/swarm_ws/src/multiagent_simulation/worlds:/workspaces/swarm_ws/src
+      GZ_SIM_RESOURCE_PATH: /workspaces/swarm_ws/src/multiagent_simulation/models:/workspaces/swarm_ws/src/multiagent_simulation/worlds:/workspaces/swarm_ws/src:/workspace/ardu_ws/install/ardupilot_gazebo/share/ardupilot_gazebo/models
     working_dir: /workspaces/swarm_ws
     user: "${UID:-1000}:${GID:-1000}"
     command: >

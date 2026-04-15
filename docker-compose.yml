@@ -9,13 +9,19 @@ services:
         USER_UID: ${UID:-1000}
         USER_GID: ${GID:-1000}
     image: multiagent_simulation:latest
+    runtime: nvidia
     privileged: true
     network_mode: host
+    group_add:
+      - "110"  # render — grants access to /dev/dri/renderD128
+      - "44"   # video  — grants access to /dev/dri/card1
     environment:
       DISPLAY: ${DISPLAY}
       QT_X11_NO_MITSHM: "1"
       GZ_VERSION: harmonic
       GZ_SIM_RESOURCE_PATH: /workspaces/swarm_ws/src/multiagent_simulation/models:/workspaces/swarm_ws/src/multiagent_simulation/worlds:/workspaces/swarm_ws/src:/workspace/ardu_ws/install/ardupilot_gazebo/share/ardupilot_gazebo/models
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: all
     working_dir: /workspaces/swarm_ws
     user: "${UID:-1000}:${GID:-1000}"
     command: >

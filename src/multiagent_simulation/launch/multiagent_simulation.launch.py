@@ -153,10 +153,11 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         sitl_port = 5501 + port_offset
         control_port = 9002 + port_offset
         sim_address = "127.0.0.1"
-        mavproxy_out1 = f"127.0.0.1:{14501 + port_offset}"
-        mavproxy_out2 = f"127.0.0.1:{14502 + port_offset}"
-        mavproxy_out3 = f"127.0.0.1:{14503 + port_offset}"
-        
+        mavproxy_out1 = f"127.0.0.1:{14500 + port_offset}"
+        mavproxy_out2 = f"127.0.0.1:{14501 + port_offset}"
+        mavproxy_out3 = f"127.0.0.1:{14502 + port_offset}"
+        mavproxy_out4 = f"127.0.0.1:{14503 + port_offset}"
+
         tty0 = f"./dev/ttyROS{instance * 10}"
         tty1 = f"./dev/ttyROS{instance * 10 + 1}"
         
@@ -252,6 +253,8 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
                 mavproxy_out2,
                 "--out",
                 mavproxy_out3,
+                "--out",
+                mavproxy_out4,
                 "--non-interactive",
             ],
             output="both",

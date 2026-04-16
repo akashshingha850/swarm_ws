@@ -74,6 +74,9 @@ RUN sudo apt install -y python3-colcon-common-extensions \
     ros-humble-ament-cmake-core \
     python3-rosdep
 
+# Install MAVProxy
+RUN pip3 install MAVProxy
+
 # Build Ardupilot workspace
 RUN cd /workspace/ardu_ws && \
     source /opt/ros/humble/setup.bash && \
@@ -87,8 +90,8 @@ RUN cd /workspace/ardu_ws && \
 RUN sudo apt install curl lsb-release gnupg -y && \
     sudo curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null && \
-    sudo apt update && \
-    sudo apt install gz-harmonic -y
+    sudo apt update --fix-missing && \
+    sudo apt install gz-harmonic -y --fix-missing
 
 # Add Gazebo Harmonic Ardupilot packages
 RUN cd /workspace/ardu_ws && \

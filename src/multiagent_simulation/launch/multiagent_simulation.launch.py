@@ -153,6 +153,10 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         sitl_port = 5501 + port_offset
         control_port = 9002 + port_offset
         sim_address = "127.0.0.1"
+        mavproxy_out = f"127.0.0.1:{14500 + port_offset}"
+        mavproxy_out2 = f"127.0.0.1:{14501 + port_offset}"
+        mavproxy_out3 = f"127.0.0.1:{14502 + port_offset}"
+        mavproxy_out4 = f"127.0.0.1:{14503 + port_offset}"
         
         tty0 = f"./dev/ttyROS{instance * 10}"
         tty1 = f"./dev/ttyROS{instance * 10 + 1}"
@@ -223,6 +227,11 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
                 "sim_address": "127.0.0.1",
                 "master": f"tcp:{sim_address}:{master_port}",
                 "sitl": f"{sim_address}:{sitl_port}",
+                # mavproxy outputs — per-robot ports: 145X0, 145X1, 145X2, 145X3
+                "out": mavproxy_out,
+                "out2": mavproxy_out2,
+                "out3": mavproxy_out3,
+                "out4": mavproxy_out4,
             }.items(),
         )
         launch_actions.append(sitl_dds)

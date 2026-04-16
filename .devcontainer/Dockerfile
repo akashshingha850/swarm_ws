@@ -67,9 +67,6 @@ RUN sudo apt install default-jre && \
     ./gradlew assemble && \
     echo "export PATH=\$PATH:$PWD/scripts" >> ~/.bashrc
 
-# Install MAVProxy for QGroundControl/MAVLink forwarding
-RUN sudo pip3 install MAVProxy
-
 
 RUN sudo apt install -y python3-colcon-common-extensions \
     ros-humble-ament-cmake \

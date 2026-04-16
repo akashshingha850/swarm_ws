@@ -44,7 +44,6 @@ setup(
     license='GPL-3.0',
     entry_points={
         'console_scripts': [
-            'move_drone = multiagent_simulation.move_drone',
             'fly_trajectory = multiagent_simulation.fly_trajectory',
             'initialization_flight = multiagent_simulation.initialization_flight',
         ],

@@ -43,6 +43,11 @@ RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 
 RUN sudo apt install ros-dev-tools python3-pip -y
 
+# MAVROS is required by multiagent_simulation.launch.py.
+RUN sudo apt update && \
+    sudo apt install -y ros-humble-mavros ros-humble-mavros-extras geographiclib-tools && \
+    sudo /opt/ros/humble/lib/mavros/install_geographiclib_datasets.sh
+
 # Setup Ardupilot
 RUN git clone https://github.com/ArduPilot/ardupilot.git && \
     sudo pip3 install future \

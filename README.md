@@ -153,6 +153,20 @@ Ardupilot then receives the external odometry via the [`/ap/tf` topic](https://a
 
 ## Troubleshooting
 
+### Launch error: package 'mavros' not found
+
+If launch fails with `package 'mavros' not found`, rebuild the Docker image so MAVROS is installed:
+
+```bash
+env UID=$(id -u) GID=$(id -g) docker compose build --no-cache multiagent-simulation
+```
+
+Then run the container again:
+
+```bash
+env UID=$(id -u) GID=$(id -g) docker compose run --rm multiagent-simulation bash
+```
+
 ### Drone model not spawning
 
 If the drone model isn't spawning into the simulation the `GZ_SIM_RESOURCE_PATH` environment variable might not be set correctly. This variable should include the [`models` folder](src/multiagent_simulation/models) and [`worlds` folder](src/multiagent_simulation/worlds) of the `multiagent_simulation` package and the [`src` folder](src) of the workspace. You can set it manually by running the following command:

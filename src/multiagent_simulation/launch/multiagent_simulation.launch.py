@@ -262,6 +262,21 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         )
         launch_actions.append(mavproxy)
 
+        mavros = Node(
+            package="mavros",
+            executable="mavros_node",
+            namespace=f"{name}/mavros",
+            parameters=[{
+                "fcu_url": f"udp://:{14500 + port_offset}@",
+                "gcs_url": "",
+                "target_system_id": sysid,
+                "target_component_id": 1,
+                "fcu_protocol": "v2.0",
+            }],
+            output="screen",
+        )
+        launch_actions.append(mavros)
+
         # Publish /tf and /tf_static.
         with open(sdf_file, "r") as infp:
             robot_desc = infp.read()

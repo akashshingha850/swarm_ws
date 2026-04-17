@@ -266,13 +266,16 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
             package="mavros",
             executable="mavros_node",
             namespace=f"{name}/mavros",
-            parameters=[{
-                "fcu_url": f"udp://:{14500 + port_offset}@",
-                "gcs_url": "",
-                "target_system_id": sysid,
-                "target_component_id": 1,
-                "fcu_protocol": "v2.0",
-            }],
+            parameters=[
+                "/opt/ros/humble/share/mavros/launch/apm_config.yaml",
+                {
+                    "fcu_url": f"udp://:{14500 + port_offset}@",
+                    "gcs_url": "",
+                    "target_system_id": sysid,
+                    "target_component_id": 1,
+                    "fcu_protocol": "v2.0",
+                },
+            ],
             output="screen",
         )
         launch_actions.append(mavros)

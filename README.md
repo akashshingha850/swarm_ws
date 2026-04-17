@@ -167,6 +167,34 @@ Then run the container again:
 env UID=$(id -u) GID=$(id -g) docker compose run --rm multiagent-simulation bash
 ```
 
+### Host ROS 2 service calls timeout outside Docker
+
+If `ros2 service call` from the host hangs or times out (`exit code 124`) while the same call works via `docker compose exec`, force Fast DDS to use UDP transport on the host.
+
+One-time in current shell:
+
+```bash
+export FASTDDS_BUILTIN_TRANSPORTS=UDPv4
+```
+
+Persistent on host (bash):
+
+```bash
+echo '' >> ~/.bashrc
+echo '# Fast DDS host<->container compatibility' >> ~/.bashrc
+echo 'if [ -z "${FASTDDS_BUILTIN_TRANSPORTS:-}" ]; then export FASTDDS_BUILTIN_TRANSPORTS=UDPv4; fi' >> ~/.bashrc
+source ~/.bashrc
+```
+
+Example takeoff sequence for `drone2` from host:
+
+```bash
+source /opt/ros/humble/setup.bash
+timeout 10s ros2 service call /drone2/mavros/set_mode mavros_msgs/srv/SetMode "{base_mode: 0, custom_mode: 'GUIDED'}"
+timeout 10s ros2 service call /drone2/mavros/cmd/arming mavros_msgs/srv/CommandBool "{value: true}"
+timeout 10s ros2 service call /drone2/mavros/cmd/takeoff mavros_msgs/srv/CommandTOL "{min_pitch: 0.0, yaw: 0.0, latitude: 0.0, longitude: 0.0, altitude: 10.0}"
+```
+
 ### Drone model not spawning
 
 If the drone model isn't spawning into the simulation the `GZ_SIM_RESOURCE_PATH` environment variable might not be set correctly. This variable should include the [`models` folder](src/multiagent_simulation/models) and [`worlds` folder](src/multiagent_simulation/worlds) of the `multiagent_simulation` package and the [`src` folder](src) of the workspace. You can set it manually by running the following command:

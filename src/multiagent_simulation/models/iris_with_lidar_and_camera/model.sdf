@@ -287,7 +287,60 @@
         <cmd_min>-2.5</cmd_min>
         <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
       </control>
+
+      <!-- SERVO10 (channel 9) -> mount pitch control -->
+      <control channel="9">
+        <jointName>gimbal_tilt_joint</jointName>
+        <multiplier>-3.14159265</multiplier>
+        <offset>-0.75</offset>
+        <servo_min>1100</servo_min>
+        <servo_max>1900</servo_max>
+        <type>COMMAND</type>
+        <cmd_topic>/gimbal/cmd_pitch</cmd_topic>
+        <p_gain>2</p_gain>
+      </control>
     </plugin>
+
+    <plugin
+      filename="gz-sim-joint-position-controller-system"
+      name="gz::sim::systems::JointPositionController">
+      <joint_name>gimbal_tilt_joint</joint_name>
+      <topic>/gimbal/cmd_pitch</topic>
+      <p_gain>2</p_gain>
+    </plugin>
+
+    <!-- Gimbal tilt link (pitch axis) -->
+    <link name="gimbal_tilt_link">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>0.000001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000001</iyy>
+          <iyz>0</iyz>
+          <izz>0.000001</izz>
+        </inertia>
+      </inertial>
+    </link>
+
+    <joint name="gimbal_tilt_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>gimbal_tilt_link</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-2.35619449</lower>
+          <upper>0.78539816</upper>
+          <effort>10</effort>
+          <velocity>1.0</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.1</damping>
+        </dynamics>
+      </axis>
+    </joint>
 
     <include merge="true">
       <uri>model://lidar</uri>
@@ -304,7 +357,7 @@
     </include>
 
     <joint name="cameras_joint" type="fixed">
-      <parent>base_link</parent>
+      <parent>gimbal_tilt_link</parent>
       <child>cameras_link</child>
       <preserve_fixed_joint>true</preserve_fixed_joint>
     </joint>

@@ -139,6 +139,17 @@ ros2 run multiagent_simulation move_drone
 
 ![Drone control GUI](doc/drone_control_gui.png)
 
+## Control the gimbal angle
+
+The gimbal is driven through the MAVROS topic `/drone1/mavros/gimbal_control/manager/set_pitchyaw`.
+The underlying message uses radians, with positive pitch up and positive yaw to the right.
+
+Publish directly to the topic:
+
+```bash
+ros2 topic pub /drone1/mavros/gimbal_control/manager/set_pitchyaw mavros_msgs/msg/GimbalManagerSetPitchyaw "{target_system: 1, target_component: 1, flags: 0, gimbal_device_id: 0, pitch: -0.349066, yaw: 0.0, pitch_rate: .nan, yaw_rate: .nan}"
+```
+
 ## Feeding in external odometry
 
 The drone can be configured to fuse external odometry by changing the parameters described in [Cartographer SLAM with ROS 2 in SITL](https://ardupilot.org/dev/docs/ros2-cartographer-slam.html#configure-ardupilot). These parameters are already available in [gazebo-iris.parm](src/multiagent_simulation/config/gazebo-iris.parm) so in order to change from GPS navigation to external odometry navigation they only need to be uncommented and the GPS section commented out.
@@ -194,6 +205,29 @@ timeout 10s ros2 service call /drone2/mavros/set_mode mavros_msgs/srv/SetMode "{
 timeout 10s ros2 service call /drone2/mavros/cmd/arming mavros_msgs/srv/CommandBool "{value: true}"
 timeout 10s ros2 service call /drone2/mavros/cmd/takeoff mavros_msgs/srv/CommandTOL "{min_pitch: 0.0, yaw: 0.0, latitude: 0.0, longitude: 0.0, altitude: 10.0}"
 ```
+
+### Gimbal does not move or moves in wrong direction
+
+The active gimbal mapping in this project uses ArduPilot mount pitch on `SERVO10` (MAVLink channel 9) and drives the `gimbal_tilt_joint` in the model.
+
+Expected config:
+
+- `src/multiagent_simulation/config/gazebo-iris.parm`
+    - `MNT1_TYPE 1`
+    - `MNT1_DEFLT_MODE 2`
+    - `SERVO10_FUNCTION 7`
+    - `MNT1_PITCH_MIN -135`
+    - `MNT1_PITCH_MAX 45`
+- `src/multiagent_simulation/models/iris_with_lidar_and_camera/model.sdf`
+    - ArduPilot plugin control block uses `<control channel="9">` for `gimbal_tilt_joint`
+    - the gimbal control block uses `type COMMAND` with `cmd_topic=/gimbal/cmd_pitch`
+    - `gz-sim-joint-position-controller-system` subscribes to `/gimbal/cmd_pitch`
+    - `gimbal_tilt_joint` axis is `<xyz>0 1 0</xyz>`
+    - joint limits are `[-2.35619449, 0.78539816]` radians
+
+If you see `Failed to do position control ... no JointPositionCmd component`, the gimbal block is still using the wrong control mode.
+
+After changing mount parameters, restart SITL/simulation to reload parameters.
 
 ### Drone model not spawning
 

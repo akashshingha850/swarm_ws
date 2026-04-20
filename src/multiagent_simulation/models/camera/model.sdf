@@ -5,7 +5,6 @@
 <!-- =================================================================================== -->
 <sdf version="1.9">
   <model name="cameras">
-    <static>true</static>
     <link name="cameras_link">
       <pose>0 0 0 0 0 0</pose>
       <kinematic>true</kinematic>

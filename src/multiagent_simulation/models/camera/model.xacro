@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <sdf version="1.9" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <model name="cameras">
-    <static>true</static>
     <link name="cameras_link">
       <pose>0 0 0 0 0 0</pose>
       <kinematic>true</kinematic>

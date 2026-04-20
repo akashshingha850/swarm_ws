@@ -18,9 +18,25 @@
       </inertial>
     </link>
 
+    <link name="cameras_static_link">
+      <pose>0 0 0 0 0 0</pose>
+      <kinematic>true</kinematic>
+      <gravity>false</gravity>
+      <inertial>
+        <mass>0.0</mass>
+        <inertia>
+          <ixx>0.0</ixx>
+          <ixy>0.0</ixy>
+          <iyy>0.0</iyy>
+          <iyz>0.0</iyz>
+          <izz>0.0</izz>
+        </inertia>
+      </inertial>
+    </link>
+
     <!-- Macro Definition for Camera -->
     <xacro:macro name="camera_sensor"
-      params="name pose optical_pose horizontal_fov image_width image_height update_rate format intrinsics:='277 277 160 120' distortion:='0.0 0.0 0.0 0.0'">
+      params="name pose optical_pose horizontal_fov image_width image_height update_rate format parent_link:='cameras_link' intrinsics:='277 277 160 120' distortion:='0.0 0.0 0.0 0.0'">
       <xacro:property name="fx" value="${intrinsics.split()[0]}" />
       <xacro:property name="fy" value="${intrinsics.split()[1]}" />
       <xacro:property name="cx" value="${intrinsics.split()[2]}" />
@@ -132,7 +148,7 @@
       </joint>
 
       <joint name="${name}_joint" type="fixed">
-        <parent>cameras_link</parent>
+        <parent>${parent_link}</parent>
         <child>${name}_link</child>
         <preserve_fixed_joint>true</preserve_fixed_joint>
       </joint>
@@ -167,6 +183,7 @@
       pose="0.0 -0.02 -0.05 0 1.57 0"
       optical_pose="0.0 -0.02 -0.05 0 3.14 1.57"
       horizontal_fov="0.92729343"
+      parent_link="cameras_static_link"
       intrinsics="960.0 960.0 564.0 564.0"
       distortion="-0.15 0.03 0.001 0.001"
       image_width="1128"
@@ -179,6 +196,7 @@
       pose="-0.05 -0.02 -0.05 0 1.57 0"
       optical_pose="-0.05 -0.02 -0.05 0 3.14 1.57"
       horizontal_fov="1.448"
+      parent_link="cameras_static_link"
       intrinsics="471.42701287242807 470.7784450086591 389.70874283839333 258.6696297186715"
       distortion="-0.3141061887234863 0.12230478626307012 -0.00010883202540227276 -0.0003551641298941904"
       image_width="752"

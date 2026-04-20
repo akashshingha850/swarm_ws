@@ -362,6 +362,12 @@
       <preserve_fixed_joint>true</preserve_fixed_joint>
     </joint>
 
+    <joint name="cameras_static_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>cameras_static_link</child>
+      <preserve_fixed_joint>true</preserve_fixed_joint>
+    </joint>
+
     <include merge="true">
       <uri>model://depth_camera</uri>
     </include>

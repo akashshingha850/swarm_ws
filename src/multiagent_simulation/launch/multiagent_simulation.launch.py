@@ -36,11 +36,23 @@ def load_robots_from_file(path):
         return yaml.safe_load(f)['robots']
 
 
+def load_settings_from_file(path):
+    with open(path, 'r') as f:
+        return yaml.safe_load(f) or {}
+
+
 def launch_setup(context: LaunchContext, *args, **kwargs):
     pkg_ros_gz_sim = get_package_share_directory("ros_gz_sim")
     pkg_ardupilot_sitl = get_package_share_directory("ardupilot_sitl")
     pkg_multiagent_simulation = get_package_share_directory("multiagent_simulation")
-    
+
+    settings_file = LaunchConfiguration("settings_file").perform(context)
+    settings = load_settings_from_file(settings_file)
+    global_mavros = settings.get('mavros', True)
+    mavros_port = int(settings.get('mavros_port', 14500))
+
+    mavros_config_file = LaunchConfiguration("mavros_config_file").perform(context)
+
     robots_file = LaunchConfiguration("robots_config_file").perform(context)
     robots = load_robots_from_file(robots_file)
 
@@ -262,23 +274,26 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         )
         launch_actions.append(mavproxy)
 
-        mavros = Node(
-            package="mavros",
-            executable="mavros_node",
-            namespace=f"{name}/mavros",
-            parameters=[
-                "/opt/ros/humble/share/mavros/launch/apm_config.yaml",
-                {
-                    "fcu_url": f"udp://:{14500 + port_offset}@",
-                    "gcs_url": "",
-                    "target_system_id": sysid,
-                    "target_component_id": 1,
-                    "fcu_protocol": "v2.0",
-                },
-            ],
-            output="screen",
-        )
-        launch_actions.append(mavros)
+        use_mavros = robot.get('mavros', global_mavros)
+        if use_mavros:
+            mavros_node = Node(
+                package="mavros",
+                executable="mavros_node",
+                namespace=f"{name}/mavros",
+                parameters=[
+                    mavros_config_file,
+                    {
+                        "fcu_url": f"udp://:{mavros_port + port_offset}@",
+                        "gcs_url": "",
+                        "target_system_id": sysid,
+                        "target_component_id": 1,
+                        "fcu_protocol": "v2.0",
+                    },
+                ],
+                arguments=["--ros-args", "--log-level", "mavros.time:=ERROR"],
+                output="screen",
+            )
+            launch_actions.append(mavros_node)
 
         # Publish /tf and /tf_static.
         with open(sdf_file, "r") as infp:
@@ -433,7 +448,7 @@ def generate_launch_description():
         [
             DeclareLaunchArgument(
                 "world_file",
-                default_value="modelflughafen/model.sdf",
+                default_value="modelflughafen/model.sdf",   # modelflughafen, # rusko_winter
                 description="World file to launch",
             ),
             DeclareLaunchArgument(
@@ -458,6 +473,16 @@ def generate_launch_description():
                 "robots_config_file",
                 default_value=os.path.join(get_package_share_directory("multiagent_simulation"), "config", "robots.yaml"),
                 description="YAML file describing robots (name, position)"
+            ),
+            DeclareLaunchArgument(
+                "settings_file",
+                default_value=os.path.join(get_package_share_directory("multiagent_simulation"), "config", "settings.yaml"),
+                description="YAML file with global simulation settings (e.g. mavros: true/false)"
+            ),
+            DeclareLaunchArgument(
+                "mavros_config_file",
+                default_value=PathJoinSubstitution([FindPackageShare("mavros"), "launch", "apm_config.yaml"]),
+                description="Path to MAVROS APM config YAML file"
             ),
             OpaqueFunction(function=launch_setup),
         ]

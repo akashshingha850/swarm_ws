@@ -1,0 +1,4 @@
+mavros: true
+mavros_port: "14500"
+# gazebo_world: " "
+# gazebo_model: " "

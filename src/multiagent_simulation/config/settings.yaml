@@ -1,4 +1,5 @@
 mavros: true
 mavros_port: "14500"
+rviz: false
 # gazebo_world: " "
 # gazebo_model: " "

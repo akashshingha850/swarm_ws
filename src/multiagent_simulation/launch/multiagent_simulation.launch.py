@@ -138,7 +138,7 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
             ),
             launch_arguments={
                 "gz_args": [
-                    "-v4 -s -r ",
+                    "-v1 -s -r ",
                     PathJoinSubstitution([
                         pkg_multiagent_simulation,
                         "worlds",
@@ -151,7 +151,7 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
             PythonLaunchDescriptionSource(
                 f'{Path(pkg_ros_gz_sim) / "launch" / "gz_sim.launch.py"}'
             ),
-            launch_arguments={"gz_args": "-v4 -g"}.items(),
+            launch_arguments={"gz_args": "-v1 -g"}.items(),
             condition=IfCondition(LaunchConfiguration("gui")),
         )
     ]
@@ -444,6 +444,11 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
 
 
 def generate_launch_description():
+    _default_settings_file = os.path.join(
+        get_package_share_directory("multiagent_simulation"), "config", "settings.yaml"
+    )
+    _settings = load_settings_from_file(_default_settings_file)
+
     return LaunchDescription(
         [
             DeclareLaunchArgument(
@@ -458,7 +463,9 @@ def generate_launch_description():
                 "gui", default_value="true", description="Run Gazebo simulation headless."
             ),
             DeclareLaunchArgument(
-                "rviz", default_value="true", description="Open RViz."
+                "rviz",
+                default_value="true" if _settings.get("rviz", True) else "false",
+                description="Open RViz (default read from settings.yaml)."
             ),
             DeclareLaunchArgument(
                 "use_mapping_camera", default_value="false", description="Whether to use the mapping camera."

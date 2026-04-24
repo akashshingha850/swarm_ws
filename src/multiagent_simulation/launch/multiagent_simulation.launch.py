@@ -41,6 +41,18 @@ def load_settings_from_file(path):
         return yaml.safe_load(f) or {}
 
 
+def _patch_world_location(world_file, location):
+    import re
+    content = open(world_file).read()
+    for key, val in location.items():
+        content = re.sub(f'<{key}>[^<]*</{key}>', f'<{key}>{val}</{key}>', content)
+    tmp = tempfile.NamedTemporaryFile(delete=False, suffix='.sdf', dir=os.path.dirname(world_file))
+    tmp.write(content.encode())
+    tmp.close()
+    return tmp.name
+
+
+
 def launch_setup(context: LaunchContext, *args, **kwargs):
     pkg_ros_gz_sim = get_package_share_directory("ros_gz_sim")
     pkg_ardupilot_sitl = get_package_share_directory("ardupilot_sitl")
@@ -50,6 +62,13 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
     settings = load_settings_from_file(settings_file)
     global_mavros = settings.get('mavros', True)
     mavros_port = int(settings.get('mavros_port', 14500))
+
+    world_sdf_path = os.path.join(
+        pkg_multiagent_simulation, "worlds", LaunchConfiguration("world_file").perform(context)
+    )
+    location = settings.get('gazebo_location')
+    if location:
+        world_sdf_path = _patch_world_location(world_sdf_path, location)
 
     mavros_config_file = LaunchConfiguration("mavros_config_file").perform(context)
 
@@ -137,14 +156,7 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
                 ])
             ),
             launch_arguments={
-                "gz_args": [
-                    "-v1 -s -r ",
-                    PathJoinSubstitution([
-                        pkg_multiagent_simulation,
-                        "worlds",
-                        LaunchConfiguration("world_file")
-                    ])
-                ]
+                "gz_args": f"-v1 -s -r {world_sdf_path}"
             }.items(),
         ),
         IncludeLaunchDescription(
@@ -453,7 +465,7 @@ def generate_launch_description():
         [
             DeclareLaunchArgument(
                 "world_file",
-                default_value="modelflughafen/model.sdf",   # modelflughafen, # rusko_winter
+                default_value=_settings.get("gazebo_world", "rusko_summer/model.sdf"),
                 description="World file to launch",
             ),
             DeclareLaunchArgument(

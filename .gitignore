@@ -8,8 +8,8 @@ eeprom.bin
 terrain
 *__pycache__
 .idea
-**/rusko_summer.dae
-**/rusko_winter.dae
+
 *.out
 
-/src/multiagent_simulation/worlds/rusko_summer/
+# /src/multiagent_simulation/worlds/rusko_summer/
+# /src/multiagent_simulation/worlds/rusko_winter/

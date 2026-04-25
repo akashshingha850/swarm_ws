@@ -41,21 +41,36 @@
       <sky></sky>
     </scene>
 
+    <model name="ground_plane">
+      <static>true</static>
+      <pose>0 0 -0.05 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2000 2000 0.1</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
     <model name="rusko_winter">
       <static>true</static>
       <pose>0 0 0 0 0 0</pose>
       <link name="link">
         <visual name="visual">
+          <cast_shadows>true</cast_shadows>
           <geometry>
             <mesh>
-              <uri>rusko_winter.dae</uri>
+              <uri>rusko_winter_visual.glb</uri>
             </mesh>
           </geometry>
         </visual>
         <collision name="collision">
           <geometry>
             <mesh>
-              <uri>rusko_winter.dae</uri>
+              <uri>rusko_winter_collision.glb</uri>
             </mesh>
           </geometry>
         </collision>

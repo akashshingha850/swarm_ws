@@ -1,10 +1,5 @@
-mavros: true
+mavros: false
 mavros_port: "14500"
 rviz: false
 gazebo_world: "rusko_winter/model.sdf"
-gazebo_location:
-  latitude_deg: 48.7749
-  longitude_deg: 19.6503
-  elevation: -1000.0
-  heading_deg: 0.0
-# gazebo_model: " "
+

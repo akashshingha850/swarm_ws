@@ -41,18 +41,6 @@ def load_settings_from_file(path):
         return yaml.safe_load(f) or {}
 
 
-def _patch_world_location(world_file, location):
-    import re
-    content = open(world_file).read()
-    for key, val in location.items():
-        content = re.sub(f'<{key}>[^<]*</{key}>', f'<{key}>{val}</{key}>', content)
-    tmp = tempfile.NamedTemporaryFile(delete=False, suffix='.sdf', dir=os.path.dirname(world_file))
-    tmp.write(content.encode())
-    tmp.close()
-    return tmp.name
-
-
-
 def launch_setup(context: LaunchContext, *args, **kwargs):
     pkg_ros_gz_sim = get_package_share_directory("ros_gz_sim")
     pkg_ardupilot_sitl = get_package_share_directory("ardupilot_sitl")
@@ -66,9 +54,6 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
     world_sdf_path = os.path.join(
         pkg_multiagent_simulation, "worlds", LaunchConfiguration("world_file").perform(context)
     )
-    location = settings.get('gazebo_location')
-    if location:
-        world_sdf_path = _patch_world_location(world_sdf_path, location)
 
     mavros_config_file = LaunchConfiguration("mavros_config_file").perform(context)
 
@@ -243,7 +228,7 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
                 "synthetic_clock": "True",
                 "wipe": "False",
                 "model": "json",
-                "speedup": "1",
+                "speedup": "2",
                 "slave": "0",
                 "instance": f"{instance}",
                 "sysid": f"{sysid}",

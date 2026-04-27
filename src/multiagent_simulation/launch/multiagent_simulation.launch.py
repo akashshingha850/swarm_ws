@@ -1,5 +1,6 @@
 import os
 import tempfile
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import yaml
@@ -39,6 +40,19 @@ def load_robots_from_file(path):
 def load_settings_from_file(path):
     with open(path, 'r') as f:
         return yaml.safe_load(f) or {}
+
+
+def home_from_sdf(sdf_path):
+    """Return 'lat,lon,alt,yaw' string parsed from <spherical_coordinates> in the SDF."""
+    tree = ET.parse(sdf_path)
+    sc = tree.find('./world/spherical_coordinates')
+    if sc is None:
+        return ""
+    lat = sc.findtext('latitude_deg', '0')
+    lon = sc.findtext('longitude_deg', '0')
+    alt = sc.findtext('elevation', '0')
+    yaw = sc.findtext('heading_deg', '0')
+    return f"{lat},{lon},{alt},{yaw}"
 
 
 def launch_setup(context: LaunchContext, *args, **kwargs):
@@ -245,6 +259,7 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
                     "dds_udp.parm",
                 ),
                 "sim_address": "127.0.0.1",
+                "home": home_from_sdf(world_sdf_path),
             }.items(),
         )
         launch_actions.append(sitl)

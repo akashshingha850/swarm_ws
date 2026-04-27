@@ -3,7 +3,7 @@
   <world name="map">
     <physics type="ode">
       <max_step_size>0.001</max_step_size>
-      <real_time_factor>1.0</real_time_factor>
+      <real_time_factor>2.0</real_time_factor>
       <real_time_update_rate>0</real_time_update_rate>
     </physics>
 
@@ -41,7 +41,7 @@
       <sky></sky>
     </scene>
 
-    <!-- <model name="ground_plane">
+    <model name="ground_plane">
       <static>true</static>
       <pose>0 0 -1 0 0 0</pose>
       <link name="link">
@@ -53,12 +53,12 @@
           </geometry>
         </collision>
       </link>
-    </model> -->
+    </model>
 
     <model name="rusko_winter">
       <static>true</static>
       <!-- <pose>0 0 -1 0 0 0</pose> -->
-      <pose>0 0 -31.4 0 0 0</pose>
+      <pose>0 0 -1 0 0 0</pose>
       <link name="link">
         <visual name="visual">
           <cast_shadows>false</cast_shadows>
@@ -68,13 +68,13 @@
             </mesh>
           </geometry>
         </visual>
-        <collision name="collision">
+        <!-- <collision name="collision">
           <geometry>
             <mesh>
               <uri>rusko_winter_collision.glb</uri>
             </mesh>
           </geometry>
-        </collision>
+        </collision> -->
       </link>
     </model>
 
@@ -83,7 +83,7 @@
       <world_frame_orientation>ENU</world_frame_orientation>
       <latitude_deg>65.0167</latitude_deg>
       <longitude_deg>25.4833</longitude_deg>
-      <elevation>10.0</elevation>
+      <elevation>446.0</elevation>
       <heading_deg>0.0</heading_deg>
     </spherical_coordinates>
     <gravity>0.0 0.0 -9.81</gravity>

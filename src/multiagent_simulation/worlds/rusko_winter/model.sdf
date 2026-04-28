@@ -58,7 +58,7 @@
     <model name="rusko_winter">
       <static>true</static>
       <!-- <pose>0 0 -1 0 0 0</pose> -->
-      <pose>0 0 -1 0 0 0</pose>
+      <pose>70 0 -32 0 0 0</pose>
       <link name="link">
         <visual name="visual">
           <cast_shadows>false</cast_shadows>
@@ -68,22 +68,22 @@
             </mesh>
           </geometry>
         </visual>
-        <!-- <collision name="collision">
+        <collision name="collision">
           <geometry>
             <mesh>
-              <uri>rusko_winter_collision.glb</uri>
+              <uri>rusko_winter_visual.glb</uri>
             </mesh>
           </geometry>
-        </collision> -->
+        </collision>
       </link>
     </model>
 
     <spherical_coordinates>
       <surface_model>EARTH_WGS84</surface_model>
       <world_frame_orientation>ENU</world_frame_orientation>
-      <latitude_deg>65.0167</latitude_deg>
-      <longitude_deg>25.4833</longitude_deg>
-      <elevation>446.0</elevation>
+      <latitude_deg>65.05066251893697</latitude_deg>
+      <longitude_deg>25.52583096586382</longitude_deg>
+      <elevation>10.0</elevation>
       <heading_deg>0.0</heading_deg>
     </spherical_coordinates>
     <gravity>0.0 0.0 -9.81</gravity>

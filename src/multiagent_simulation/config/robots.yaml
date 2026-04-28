@@ -2,6 +2,6 @@ robots:
   - name: drone1
     position: [0, 0, 0.5, 0, 0, 0]
   # - name: drone2
-  #   position: [0, -5, 0, 0, 0, 0]
+  #   position: [0, 1, 0.5, 0, 0, 0]
   # - name: drone3
-  #   position: [0, 1, 0, 0, 0, 0]
+  #   position: [0, -1, 0.5, 0, 0, 0]

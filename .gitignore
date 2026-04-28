@@ -11,5 +11,4 @@ terrain
 
 *.out
 
-# /src/multiagent_simulation/worlds/rusko_summer/
-# /src/multiagent_simulation/worlds/rusko_winter/
+*mav**.parm

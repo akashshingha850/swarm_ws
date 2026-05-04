@@ -10,5 +10,6 @@ terrain
 .idea
 
 *.out
-
-*mav**.parm
+.*log
+*mav_*.parm
+*.obj

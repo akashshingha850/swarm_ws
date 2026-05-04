@@ -64,14 +64,14 @@
           <cast_shadows>false</cast_shadows>
           <geometry>
             <mesh>
-              <uri>rusko_winter_visual.glb</uri>
+              <uri>rusko_winter.glb</uri>
             </mesh>
           </geometry>
         </visual>
         <collision name="collision">
           <geometry>
             <mesh>
-              <uri>rusko_winter_visual.glb</uri>
+              <uri>rusko_winter.glb</uri>
             </mesh>
           </geometry>
         </collision>

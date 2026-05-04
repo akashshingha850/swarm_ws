@@ -57,21 +57,20 @@
 
     <model name="rusko_summer">
       <static>true</static>
-      <!-- <pose>100 0 -32.11 0 0 0</pose> -->
       <pose>70 0 -32 0 0 0</pose>
       <link name="link">
         <visual name="visual">
           <cast_shadows>false</cast_shadows>
           <geometry>
             <mesh>
-              <uri>rusko_summer_visual.glb</uri>
+              <uri>rusko_summer.glb</uri>
             </mesh>
           </geometry>
         </visual>
         <collision name="collision">
           <geometry>
             <mesh>
-              <uri>rusko_summer_visual.glb</uri>
+              <uri>rusko_summer.glb</uri>
             </mesh>
           </geometry>
         </collision>

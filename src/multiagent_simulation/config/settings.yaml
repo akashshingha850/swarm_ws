@@ -1,5 +1,5 @@
-mavros: true
+mavros: false
 mavros_port: "14500"
-rviz: false
+rviz: true
 gazebo_world: "rusko_winter/model.sdf"
 

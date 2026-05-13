@@ -1,5 +1,5 @@
 mavros: false
 mavros_port: "14500"
-rviz: true
+rviz: false
 gazebo_world: "hackathon/model.sdf"
 
